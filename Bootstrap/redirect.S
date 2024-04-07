@@ -404,8 +404,8 @@ got_address:
 
 	mr FILE, r3
 
-	lis r3, MSG_LoadingDLCode@h
-	ori r3, r3, MSG_LoadingDLCode@l
+	lis r3, MSG_LoadingRelocs@h
+	ori r3, r3, MSG_LoadingRelocs@l
 	lwz r12, ADDR_OSReport(ADDR)
 	mtctr r12
 	bctrl
