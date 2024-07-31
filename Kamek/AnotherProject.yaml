@@ -1,9 +1,0 @@
----
-output_dir: "AnotherASM"
-code_address: 0x80A02610
-defines:
-  - ANOTHER_WII
-modules:
-  - processed/anotherhax.yaml
-#  - processed/replay.yaml
-  - processed/exceptionHandler.yaml

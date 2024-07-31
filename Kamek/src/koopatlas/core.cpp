@@ -1099,13 +1099,8 @@ void dScKoopatlas_c::showSaveWindow() {
 static const wchar_t *completionMsgs[] = {
 	L"The most erudite of Buttocks",
 	L"You've collected all of\nthe \x0B\x014F\xBEEF Star Coins in\n",
-#ifdef FALLING_LEAF
-	L"You've gotten all of the\nexits in Newer Falling Leaf!",
-	L"You've done everything there\nis to do in the game!\nYou're a super player!\nThanks for playing!",
-#else
 	L"You have gotten every \x0B\x013B\xBEEF exit\nin",
 	L"You have gotten everything\nin",
-#endif
 	L"You have collected all the\nnecessary \x0B\x014F\xBEEF coins to enter\nthe Special World!",
 	L"You have collected all the \x0B\x014F\xBEEF Star\nCoins in the game!",
 	L"You've found every \x0B\x013B\xBEEF exit in the\ngame!",
@@ -1145,7 +1140,6 @@ void dScKoopatlas_c::executeState_CompletionMsg() {
 		// Used when we assemble a dynamic message
 		wchar_t text[512];
 
-#ifndef FALLING_LEAF
 		if (type >= CMP_MSG_COINS && type <= CMP_MSG_WORLD) {
 			// title
 			int w = pathManager.completionMessageWorldNum;
@@ -1170,7 +1164,6 @@ void dScKoopatlas_c::executeState_CompletionMsg() {
 			text[pos++] = 0;
 			baseText = text;
 		}
-#endif
 
 		yesNoWindow->T_question_00->SetString(baseText);
 		yesNoWindow->T_questionS_00->SetString(baseText);

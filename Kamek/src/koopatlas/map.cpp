@@ -553,7 +553,6 @@ void dWMMap_c::doEffects() {
 	// Note: effect::spawn() takes name, unk, pos, rot, scale
 	const S16Vec efRot = {0x1800, 0, 0};
 
-#ifdef FALLING_LEAF
 	if (mapID == 0) {
 		// Torches
 		static const VEC3 torchPos[6] = {
@@ -580,7 +579,6 @@ void dWMMap_c::doEffects() {
 		const VEC3 efPos = {5500.0f, -5050.0f, 7000.0f};
 		effects[6].spawn("Wm_cs_snow_b", 0, &efPos, &efRot, 0);
 	}
-#else
 	if (mapID == 1) {
 		// Fullmap.
 		// Torches
@@ -608,7 +606,6 @@ void dWMMap_c::doEffects() {
 		const VEC3 efPos = {6000.0f, -5250.0f, 7000.0f};
 		effects[6].spawn("Wm_cs_snow_b", 0, &efPos, &efRot, 0);
 	}
-#endif
 
 	if (mapID == 4) {
 		// Freezeflame Volcano -- DONE

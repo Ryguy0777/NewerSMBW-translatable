@@ -1,9 +1,0 @@
----
-output_dir: "XmasASM"
-code_address: 0x808D9000
-defines:
-  - HOLIDAY_SPECIAL
-modules:
-  - processed/xmashax.yaml
-  - processed/exceptionHandler.yaml
-  - processed/actors.yaml
