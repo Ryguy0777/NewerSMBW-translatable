@@ -54,6 +54,8 @@ extern char CurrentLevel;
 extern char CurrentWorld;
 
 void LoadPregameStyleNameAndNumber(m2d::EmbedLayout_c *layout) {
+	dScript::Res_c *msgRes = GetBMG();
+
 	nw4r::lyt::TextBox
 		*LevelNumShadow, *LevelNum,
 		*LevelNameShadow, *LevelName;
@@ -67,7 +69,7 @@ void LoadPregameStyleNameAndNumber(m2d::EmbedLayout_c *layout) {
 	dLevelInfo_c::entry_s *level = dLevelInfo_c::s_info.searchBySlot(CurrentWorld, CurrentLevel);
 	if (level) {
 		wchar_t convLevelName[160];
-		const char *srcLevelName = dLevelInfo_c::s_info.getNameForLevel(level);
+		const wchar_t *srcLevelName = dLevelInfo_c::s_info.getNameForLevel(level);
 		int i = 0;
 		while (i < 159 && srcLevelName[i]) {
 			convLevelName[i] = srcLevelName[i];
@@ -78,7 +80,7 @@ void LoadPregameStyleNameAndNumber(m2d::EmbedLayout_c *layout) {
 		LevelName->SetString(convLevelName);
 
 		wchar_t levelNumber[32];
-		wcscpy(levelNumber, L"World ");
+		wcscpy(levelNumber, msgRes->findStringForMessageID(BMG_CAT_NEWER, 9));
 		getNewerLevelNumberString(level->displayWorld, level->displayLevel, &levelNumber[6]);
 
 		LevelNum->SetString(levelNumber);
@@ -95,8 +97,9 @@ void LoadPregameStyleNameAndNumber(m2d::EmbedLayout_c *layout) {
 		LevelNumShadow->SetString(levelNumber);
 
 	} else {
-		LevelNameShadow->SetString(L"Not found in LevelInfo!");
-		LevelName->SetString(L"Not found in LevelInfo!");
+		const wchar_t *fallBackName = msgRes->findStringForMessageID(BMG_CAT_NEWER, 0);
+		LevelNameShadow->SetString(fallBackName);
+		LevelName->SetString(fallBackName);
 	}
 }
 
@@ -115,7 +118,6 @@ void PregameLytHandler::hijack_loadLevelNumber() {
 		LevelSample->material->texMaps[0].ReplaceImage((TPLPalette*)tpl.ptr(), 0);
 	}
 }
-
 
 
 

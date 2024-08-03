@@ -44,8 +44,9 @@ public:
 		return (section_s*)(((char*)data) + data->sectionOffsets[index]);
 	}
 
-	const char *getNameForLevel(entry_s *entry) {
-		return (const char*)data + entry->nameOffset;
+	const wchar_t *getNameForLevel(entry_s *entry) {
+		//return (const wchar_t*)data + entry->nameOffset;
+		return (const wchar_t*)((u32)data + (u32)entry->nameOffset);	//fixed
 	}
 
 	static dLevelInfo_c s_info;
@@ -53,4 +54,3 @@ public:
 
 
 #endif
-

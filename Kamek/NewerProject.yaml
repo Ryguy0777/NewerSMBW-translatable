@@ -4,7 +4,8 @@ defines:
   - NEWER_WII
 modules:
   - processed/prolog.yaml
-  - processed/corseClear.yaml
+  - processed/language.yaml
+#  - processed/corseClear.yaml
   - processed/apDebug.yaml
   - processed/hardMode.yaml
 #  - processed/layoutDebug.yaml

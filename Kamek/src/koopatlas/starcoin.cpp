@@ -88,9 +88,10 @@ int dWMStarCoin_c::onCreate() {
 
 		static const char *tbNames[] = {
 			"LeftTitle", "RightTitle", "TotalCoinCount", "UnspentCoinCount",
-			"EarnedCoinCount", "EarnedCoinMax", "BtnBackText",
+			"EarnedCoinCount", "EarnedCoinMax", "BtnBackText", "TotalCoinsTitle",
+			"CollectedTitle", "UnspentTitle", "BtnWorldSelText", 
 		};
-		layout.getTextBoxes(tbNames, &LeftTitle, 7);
+		layout.getTextBoxes(tbNames, &LeftTitle, 11);
 
 		static const char *picNames[] = {
 			"DPadLeft", "DPadRight",
@@ -102,6 +103,13 @@ int dWMStarCoin_c::onCreate() {
 
 		layoutLoaded = true;
 	}
+
+	this->msgRes = GetBMG();
+
+	WriteBMGToTextBox(TotalCoinsTitle, msgRes, BMG_CAT_NEWER, 0x43, 0);
+	WriteBMGToTextBox(CollectedTitle, msgRes, BMG_CAT_NEWER, 0x44, 0);
+	WriteBMGToTextBox(UnspentTitle, msgRes, BMG_CAT_NEWER, 0x45, 0);
+	WriteBMGToTextBox(BtnWorldSelText, msgRes, BMG_CAT_NEWER, 0x46, 0);
 
 	return true;
 }
@@ -321,9 +329,9 @@ void dWMStarCoin_c::loadSectionInfo() {
 		names[1] = 0;
 
 	// work out the names
-	WriteAsciiToTextBox(LeftTitle, linfo->getNameForLevel(names[0]));
+	WriteUnicodeToTextBox(LeftTitle, linfo->getNameForLevel(names[0]));
 	if (names[1])
-		WriteAsciiToTextBox(RightTitle, linfo->getNameForLevel(names[1]));
+		WriteUnicodeToTextBox(RightTitle, linfo->getNameForLevel(names[1]));
 	RightTitle->SetVisible(names[1] != 0);
 
 	// load all level info
@@ -351,7 +359,7 @@ void dWMStarCoin_c::loadSectionInfo() {
 			}
 
 			LevelName[col][row]->SetVisible(true);
-			WriteAsciiToTextBox(LevelName[col][row], linfo->getNameForLevel(level));
+			WriteUnicodeToTextBox(LevelName[col][row], linfo->getNameForLevel(level));
 		}
 	}
 
@@ -409,9 +417,9 @@ void dWMStarCoin_c::executeState_ShowSectionWait() {
 }
 void dWMStarCoin_c::endState_ShowSectionWait() { }
 
-void dWMStarCoin_c::showSecretMessage(const wchar_t *title, const wchar_t **body, int lineCount, const wchar_t **body2, int lineCount2) {
+void dWMStarCoin_c::showSecretMessage(int title, int *body, int lineCount, int *body2, int lineCount2) {
 	LeftTitle->SetVisible(true);
-	LeftTitle->SetString(title);
+	WriteBMGToTextBox(LeftTitle, msgRes, BMG_CAT_NEWER, title, 0);
 	RightTitle->SetVisible(false);
 
 	for (int c = 0; c < COLUMN_COUNT; c++) {
@@ -428,13 +436,13 @@ void dWMStarCoin_c::showSecretMessage(const wchar_t *title, const wchar_t **body
 
 	for (int i = 0; i < lineCount; i++) {
 		LevelName[0][i]->SetVisible(true);
-		LevelName[0][i]->SetString(body[i]);
+		WriteBMGToTextBox(LevelName[0][i], msgRes, BMG_CAT_NEWER, body[i], 0);
 	}
 
 	if (body2) {
 		for (int i = 0; i < lineCount2; i++) {
 			LevelName[1][i]->SetVisible(true);
-			LevelName[1][i]->SetString(body2[i]);
+			WriteBMGToTextBox(LevelName[1][i], msgRes, BMG_CAT_NEWER, body2[i], 0);
 		}
 	}
 }
@@ -447,31 +455,23 @@ void dWMStarCoin_c::executeState_Wait() {
 	if ((GetActiveRemocon()->heldButtons == 0x810) && (nowPressed & 0x810)) {
 
 		const int lineCountOn = 9, lineCountOff = 2;
-		static const wchar_t *linesOn[lineCountOn] = {
-			L"You've activated Hard Mode!",
-			L" ",
-			L"In Hard Mode, Mario will die",
-			L"any time he takes damage, and",
-			L"the timer will be more strict.",
-			L" ",
-			L"So treasure your Yoshi and",
-			L"hold on to your hat, 'cause",
-			L"you're in for a wild ride!",
+		static int bmgsOn[lineCountOn] = {
+			0xC, 0xD, 0xE, 0xF, 0x10,
+			0xD, 0x11, 0x12, 0x13,
 		};
-		static const wchar_t *linesOff[lineCountOff] = {
-			L"Hard Mode has been",
-			L"turned off.",
+		static int bmgsOff[lineCountOff] = {
+			0x15, 0x16,
 		};
 
 		if (!enableHardMode) {
 			enableHardMode = true;
 			OSReport("Hard Mode enabled!\n");
 			MapSoundPlayer(SoundRelatedClass, SE_VOC_MA_CS_COURSE_IN_HARD, 1);
-			showSecretMessage(L"Hard Mode", linesOn, lineCountOn);
+			showSecretMessage(0xB, (int *)bmgsOn, lineCountOn);
 		} else {
 			enableHardMode = false;
 			OSReport("Hard Mode disabled!\n");
-			showSecretMessage(L"Classic Mario", linesOff, lineCountOff);
+			showSecretMessage(0x14, (int *)bmgsOff, lineCountOff);
 		}
 		return;
 	}
@@ -486,30 +486,22 @@ void dWMStarCoin_c::executeState_Wait() {
 				//enableDebugMode = !enableDebugMode;
 				//OSReport("Debug mode toggled!\n");
 				const int lineCountOn = 9, lineCountOff = 2;
-				static const wchar_t *linesOn[lineCountOn] = {
-					L"The experimental Replay",
-					L"Recording feature has",
-					L"been enabled. Enjoy!",
-					L"You'll find your Replays",
-					L"on your SD or USB, depending",
-					L"on where Newer's files are.",
-					L"It might not work, so",
-					L"save your game before you",
-					L"play a level!",
+				static int bmgsOn[lineCountOn] = {
+					0x18, 0x19, 0x1A, 0x1B, 0x1C,
+					0x1D, 0x1E, 0x1F, 0x20,
 				};
-				static const wchar_t *linesOff[lineCountOff] = {
-					L"Replay Recording",
-					L"turned off.",
+				static int bmgsOff[lineCountOff] = {
+					0x21, 0x22,
 				};
 
 				if (isReplayEnabled != 100) {
 					isReplayEnabled = 100;
 					OSReport("Replay Recording enabled!\n");
-					showSecretMessage(L"Nice!", linesOn, lineCountOn);
+					showSecretMessage(0x17, (int *)bmgsOn, lineCountOn);
 				} else {
 					isReplayEnabled = 0;
 					OSReport("Replay Recording disabled!\n");
-					showSecretMessage(L"Nice!", linesOff, lineCountOff);
+					showSecretMessage(0x17, (int *)bmgsOff, lineCountOff);
 				}
 			}
 			return;
@@ -529,51 +521,27 @@ void dWMStarCoin_c::executeState_Wait() {
 				MapSoundPlayer(SoundRelatedClass, SE_VOC_MA_GET_PRIZE, 1);
 
 				const int msgCount = 9;
-				static const wchar_t *msg[msgCount] = {
-					L"You've found the Totally",
-					L"Secret Collision Debug Mode.",
-					L"We used this to make the",
-					L"hitboxes on our custom sprites",
-					L"and bosses suck less. Awesome,",
-					L"right?!",
-					L"Actually, I did it just to waste",
-					L"some time, but it ended up",
-					L"being pretty useful!",
+				static int msgBmgs[msgCount] = {
+					0x24, 0x25, 0x26, 0x27, 0x28,
+					0x29, 0x2A, 0x2B, 0x2C,
 				};
 				const int msgCount2 = 9;
-				static const wchar_t *msg2[msgCount2] = {
-					L"And yes, I know it doesn't show",
-					L"a couple of things properly",
-					L"like round objects and rolling",
-					L"hills and so on.",
-					L"Can't have it all, can you?",
-					L"Wonder if Nintendo had",
-					L"something like this...",
-					L"",
-					L"    Treeki, 9th February 2013",
+				static int msgBmgs2[msgCount2] = {
+					0x2D, 0x2F, 0x30, 0x31, 0x32, //forgot entry 0xD02E, lol
+					0x33, 0x34, 0xD, 0x35,
 				};
-				showSecretMessage(L"Groovy!", msg, msgCount, msg2, msgCount2);
+				showSecretMessage(0x23, (int *)msgBmgs, msgCount, (int *)msgBmgs2, msgCount2);
 			} else {
 				const int msgCount = 6;
-				static const wchar_t *msg[msgCount] = {
-					L"You've turned off the Totally",
-					L"Secret Collision Debug Mode.",
-					L"",
-					L"... and no, I'm not going to write",
-					L"another ridiculously long",
-					L"message to go here. Sorry!",
+				static int msgBmgs[msgCount] = {
+					0x36, 0x37, 0xD, 0x38, 0x39,
+					0x3A,
 				};
-				static const wchar_t *hiddenMsg[] = {
-					L"If you found these messages by",
-					L"looking through strings in the DLCode",
-					L"file, then... that's kind of cheating.",
-					L"Though I can't say I wouldn't do the",
-					L"same!",
-					L"You won't actually see this in game",
-					L"btw :p So why am I bothering with linebreaks anyway? I dunno. Oh well.",
-					L"Also, don't put this message on TCRF. Or do! Whatever. :(",
+				static int hiddenBmg[] = {
+					0x3B, 0x3C, 0x3D, 0x3E, 0x3F,
+					0x40, 0x41, 0x42
 				};
-				showSecretMessage(L"Groovy!", msg, msgCount, hiddenMsg, 0);
+				showSecretMessage(0x23, (int *)msgBmgs, msgCount, (int *)hiddenBmg, 0);
 			}
 		}
 	} else if (nowPressed & WPAD_ONE) {

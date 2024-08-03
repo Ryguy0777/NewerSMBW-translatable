@@ -60,6 +60,18 @@ void WriteAsciiToTextBox(nw4r::lyt::TextBox *tb, const char *source) {
 	tb->SetString(buffer);
 }
 
+void WriteUnicodeToTextBox(nw4r::lyt::TextBox *tb, const wchar_t *source) {
+	int i = 0;
+	wchar_t buffer[1024];
+	while (i < 1023 && source[i]) {
+		buffer[i] = source[i];
+		i++;
+	}
+	buffer[i] = 0;
+
+	tb->SetString(buffer);
+}
+
 
 void getNewerLevelNumberString(int world, int level, wchar_t *dest) {
 	static const wchar_t *numberKinds[] = {

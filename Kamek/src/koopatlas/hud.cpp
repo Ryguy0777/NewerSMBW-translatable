@@ -29,6 +29,7 @@ enum WMHudAnimation {
 
 
 int dWMHud_c::onCreate() {
+	this->msgRes = GetBMG();
 	if (!layoutLoaded) {
 		bool gotFile = layout.loadArc("MapHUD.arc", false);
 		if (!gotFile)
@@ -125,7 +126,7 @@ void dWMHud_c::loadInitially() {
 	doneFirstShow = true;
 
 	SaveBlock *save = GetSaveFile()->GetBlock(-1);
-	willShowFooter = (save->newerWorldName[0] != 0) && (save->hudHintH != 2000);
+	willShowFooter = (save->worldBMGCat != 0 && save->worldBMGID != 0) && (save->hudHintH != 2000);
 
 	if (!dScKoopatlas_c::instance->pathManager.isMoving)
 		enteredNode();
@@ -221,14 +222,14 @@ void dWMHud_c::loadHeaderInfo() {
 			nodeForHeader->levelNumber[0]-1, nodeForHeader->levelNumber[1]-1);
 
 	if (infEntry == 0) {
-		LevelName->SetString(L"Unknown Level Name!");
-		LevelNameS->SetString(L"Unknown Level Name!");
+		WriteBMGToTextBox(LevelName, msgRes, BMG_CAT_NEWER, 0xA, 0);
+		WriteBMGToTextBox(LevelNameS, msgRes, BMG_CAT_NEWER, 0xA, 0);
 		return;
 	}
 
 	// LEVEL NAME
 	wchar_t convertedLevelName[100];
-	const char *sourceLevelName = levelInfo->getNameForLevel(infEntry);
+	const wchar_t *sourceLevelName = levelInfo->getNameForLevel(infEntry);
 	int charCount = 0;
 	
 	while (*sourceLevelName != 0 && charCount < 99) {
@@ -341,17 +342,9 @@ void dWMHud_c::loadHeaderInfo() {
 void dWMHud_c::loadFooterInfo() {
 	SaveBlock *save = GetSaveFile()->GetBlock(-1);
 
-	wchar_t convertedWorldName[32];
-	int i;
-	for (i = 0; i < 32; i++) {
-		convertedWorldName[i] = save->newerWorldName[i];
-		if (convertedWorldName[i] == 0)
-			break;
-	}
-	convertedWorldName[31] = 0;
-
-	WorldName->SetString(convertedWorldName);
-	WorldNameS->SetString(convertedWorldName);
+	OSReport("name entry: %X%02X\n", save->worldBMGCat, save->worldBMGID);
+	WriteBMGToTextBox(WorldName, msgRes, save->worldBMGCat, save->worldBMGID, 0);
+	WriteBMGToTextBox(WorldNameS, msgRes, save->worldBMGCat, save->worldBMGID, 0);
 
 	WorldName->colour1 = save->hudTextColours[0];
 	WorldName->colour2 = save->hudTextColours[1];

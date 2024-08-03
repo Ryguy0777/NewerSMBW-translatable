@@ -1,4 +1,8 @@
 SECTIONS {
+	returnNiceWorld = 0x8077da14;
+	returnNiceTitle = 0x8077d048;
+	GetGameLanguageOriginal = 0x800B4630;
+
 	instance__7StageC4 = 0x8042A2B8;
 
 	GetResNodeNumEntries__Q34nw4r3g3d6ResMdlCFv = 0x8023B4A0;

@@ -1,4 +1,5 @@
 #include "levelinfo.h"
+#include "language.h"
 
 dDvdLoader_c s_levelInfoLoader;
 bool s_levelInfoLoaded = false;
@@ -9,7 +10,9 @@ bool LoadLevelInfo() {
 	if (s_levelInfoLoaded)
 		return true;
 
-	void *data = s_levelInfoLoader.load("/NewerRes/LevelInfo.bin");
+	char levelInfoPath[35];
+	snprintf(levelInfoPath, 35, "%sNewer/LevelInfo.bin", GetGameLanguageFolder());
+	void *data = s_levelInfoLoader.load(levelInfoPath);
 	if (data) {
 		dLevelInfo_c::s_info.load(data);
 		s_levelInfoLoaded = true;
@@ -33,12 +36,12 @@ void dLevelInfo_c::load(void *buffer) {
 
 			if (level->levelSlot < 42)
 				SetSomeConditionShit(level->worldSlot, level->levelSlot, level->flags);
-
-			char *name = (char*)getNameForLevel(level);
+/*
+			wchar_t *name = (wchar_t*)getNameForLevel(level);
 
 			for (int i = 0; i < level->nameLength+1; i++) {
 				name[i] -= 0xD0;
-			}
+			}*/
 		}
 	}
 }
@@ -126,4 +129,3 @@ void UpdateFSStars() {
 
 	OSReport("FS Stars updated: Status: Game beaten: %d, Normal exits: %d, Normal coins: %d, W9 exits: %d, W9 coins: %d\n", beatGame, exitsNormal, coinsNormal, exitsW9, coinsW9);
 }
-

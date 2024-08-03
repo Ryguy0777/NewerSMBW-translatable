@@ -1,5 +1,38 @@
-# NEWER Super Mario Bros. Wii
-## Source Code Public Release
+# NEWER Super Mario Bros. Wii - Translatable Hack
+## Translations
+
+The Majority of NewerSMBW's custom texts are either loaded from a non-language
+specific file, hardcoded, or stored inside the layout file.
+This causes NewerSMBW based mods to be either single language or english only,
+depending on the type of text.
+This version of NewerSMBW moves all the game text into the Message.arc file,
+making it completely translatable into other languages.
+
+### Changes from NewerSMBW
+
+* Incorportated ['Wakanameko's UTF LevelInfo Mod'][utf].
+* Moved LevelInfo.bin and Messages.bin to the `Language/Newer` folder.
+* Added new entries for all of Newer's text into the Message.arc file.
+* Changed Layout code to load strings from the Message.arc file.
+* Koopatlas now loads world names from the Message.arc file.
+
+### Installation
+
+Add the "Lang" folder to your NewerSMBW folder. Delete the "Message" and "Font" folders.
+Add the Language patches from the riivolution xml to your riivolution xml.
+NOTE: currently the only supported languages are:
+* European English
+
+### Adding a Translation
+
+Pull requests to add or improve translations will gladly be accepted.
+LevelInfo must be edited using ['Wakanameko's UTF LevelInfo Editor'][utfed].
+
+For BMG editing, refer to the BMG INFO.txt file.
+
+Credits translations are not supported at this time.
+
+## Original Readme
 
 ### Preamble
 

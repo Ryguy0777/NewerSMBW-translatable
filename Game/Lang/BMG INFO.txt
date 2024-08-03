@@ -1,0 +1,25 @@
+EDITING:
+For editing I highly reccomend
+https://github.com/Developers-Collective/NSMBW-BMG-Editor
+Unlike other editors, it allows for direct editing of Message.arc and shows the proper entry IDs & flags.
+
+Each entry has flags related to it. These flags control how the BMG entry is written to the textbox.
+You can think of the flags being like Reggie! spritedata, but for BMG entries.
+Format: 0x00XX0Y00
+XX: Font X scale. Normally the X scale of the text in the textbox, but if the default text size is 32 then it's size*2.
+ - Note: I assume the intended use for this is to "scale down" strings that are longer in other languages, not sure if that's how it is actually used.
+Y: Font to print. 0 = marioFont 1 = PictureFont 2 = MessageFont 3 = numberFont.
+
+INFO:
+BMG entry IDs are stored in hexadecimal and seperated into category and message.
+Message value is the last 2 digits of the entry number, category is every number before.
+For example entry 3c84 is category 3c, message 84.
+
+Our custom BMG entries start at category d0. category d0 stores general purpose messages and layout strings.
+BMG entries without any flags set are not written to textboxes directly but are instead grabbed as strings in code.
+You do not need to add flags to these entries.
+
+Categories above d0 are used for Koopatlas world names.
+World name categories are calculated by d1+world index (world index being the index of that map file in List.txt, starting from 0).
+World name messages are the world number in said map file.
+For example, map index 1 (fullmap) world 3 (Mushroom Peaks) is entry d203.

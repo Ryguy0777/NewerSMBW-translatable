@@ -1,6 +1,7 @@
 #include <common.h>
 #include <game.h>
 #include "msgbox.h"
+#include "language.h"
 
 // Replaces: EN_LIFT_ROTATION_HALF (Sprite 107; Profile ID 481 @ 80AF96F8)
 
@@ -88,7 +89,9 @@ int dMsgBoxManager_c::onDelete() {
 CREATE_STATE_E(dMsgBoxManager_c, LoadRes);
 
 void dMsgBoxManager_c::executeState_LoadRes() {
-	if (msgDataLoader.load("/NewerRes/Messages.bin")) {
+	char messagesPath[35];
+	snprintf(messagesPath, 35, "%sNewer/Messages.bin", GetGameLanguageFolder());
+	if (msgDataLoader.load(messagesPath)) {
 		state.setState(&StateID_Wait);
 	} else {
 	}

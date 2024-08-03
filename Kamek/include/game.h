@@ -263,6 +263,9 @@ public:
 			u8 newerWorldID; // 0x739
 			u8 titleScreenWorld; // 0x73A
 			u8 titleScreenLevel; // 0x73B
+
+			u8 worldBMGCat; // 0x73C
+			u8 worldBMGID; // 0x73D
 			// Pretty much full up here...
 		};
 	};
@@ -4057,6 +4060,12 @@ class StageC4 {
 		u32 _10, _14;
 		u8 flags, _19, _1A, willDisplay, _1C, _1D;
 };
+
+#define BMG_CAT_NEWER  0xd0 //most texts use this category
+#define BMG_CAT_KP_NAME 0xd1 //base category for worldnames
+//worldnames use format 
+// category: BMG_CAT_KP_NAME + world index (List.txt)
+// ID: world number (from koopatlas map info)
 
 #endif
 

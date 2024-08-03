@@ -1368,7 +1368,7 @@ void dWMPathManager_c::moveThroughPath(int pressedDir) {
 			const dKPWorldDef_s *world = dScKoopatlas_c::instance->mapData.findWorldDef(to->worldID);
 			if (world) {
 				bool visiblyChange = true;
-				if (strncmp(save->newerWorldName, world->name, 32) == 0) {
+				if ((save->worldBMGID == world->worldID) && (save->worldBMGCat == save->current_world)) {
 					OSReport("Already here, but setting BGM track\n");
 					visiblyChange = false;
 				}
@@ -1415,7 +1415,7 @@ void dWMPathManager_c::moveThroughPath(int pressedDir) {
 				OSReport("No world\n");
 				save->currentMapMusic = 0;
 				dKPMusic::play(0);
-				save->newerWorldName[0] = 0;
+				//save->newerWorldName[0] = 0;
 				if (dWMHud_c::instance)
 					dWMHud_c::instance->hideFooter();
 			} else {
@@ -1494,8 +1494,10 @@ void dWMPathManager_c::moveThroughPath(int pressedDir) {
 void dWMPathManager_c::copyWorldDefToSave(const dKPWorldDef_s *world) {
 	SaveBlock *save = GetSaveFile()->GetBlock(-1);
 
-	strncpy(save->newerWorldName, world->name, 32);
-	save->newerWorldName[31] = 0;
+	OSReport("world index: %d, world number: %d\n", save->current_world, world->worldID);
+	save->worldBMGCat = BMG_CAT_KP_NAME + save->current_world;
+	save->worldBMGID = world->worldID;
+
 	save->newerWorldID = world->worldID;
 	save->currentMapMusic = world->trackID;
 

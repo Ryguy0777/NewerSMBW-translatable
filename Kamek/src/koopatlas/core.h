@@ -138,6 +138,8 @@ class dScKoopatlas_c : public dScene_c {
 		void showSaveWindow();
 
 		bool keepMusicPlaying;
+
+		dScript::Res_c *msgRes;
 };
 
 extern void *_8042A788;

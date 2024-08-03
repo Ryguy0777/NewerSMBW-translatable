@@ -69,6 +69,8 @@ class dWMHud_c : public dBase_c {
 			*WorldName, *WorldNameS,
 			*StarCoinCounter,
 			*T_lifeNumber[4];
+		
+		dScript::Res_c *msgRes;
 };
 
 #endif

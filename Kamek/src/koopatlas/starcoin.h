@@ -46,6 +46,8 @@ class dWMStarCoin_c : public dActor_c {
 		bool isLeftArrowVisible, isRightArrowVisible;
 		bool willExit;
 
+		dScript::Res_c *msgRes;
+
 		bool canScrollLeft() const;
 		bool canScrollRight() const;
 		void loadInfo();
@@ -58,7 +60,7 @@ class dWMStarCoin_c : public dActor_c {
 		void setLeftArrowVisible(bool value);
 		void setRightArrowVisible(bool value);
 
-		void showSecretMessage(const wchar_t *title, const wchar_t **body, int lineCount, const wchar_t **body2 = 0, int lineCount2 = 0);
+		void showSecretMessage(int title, int *body, int lineCount, int *body2 = 0, int lineCount2 = 0);
 
 		nw4r::lyt::Picture
 			*Shine[COLUMN_COUNT][SHINE_COUNT],
@@ -71,7 +73,9 @@ class dWMStarCoin_c : public dActor_c {
 			*LeftTitle, *RightTitle,
 			*TotalCoinCount, *UnspentCoinCount,
 			*EarnedCoinCount, *EarnedCoinMax,
-			*BtnBackText;
+			*BtnBackText, *TotalCoinsTitle,
+			*CollectedTitle, *UnspentTitle,
+			*BtnWorldSelText;
 
 		dStateWrapper_c<dWMStarCoin_c> state;
 

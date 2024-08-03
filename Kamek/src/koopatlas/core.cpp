@@ -410,10 +410,14 @@ int dScKoopatlas_c::onCreate() {
 	*CurrentDrawFunc = NewerMapDrawFunc;
 
 	SpammyReport("onCreate() completed\n");
+
+	//no, do this first
+	this->msgRes = GetBMG();
 	
 	// Prepare this first
 	SaveBlock *save = GetSaveFile()->GetBlock(-1);
 	currentMapID = save->current_world;
+	OSReport("%p\n", &save->current_world);
 	isFirstPlay = (currentMapID == 0) && (settings & 0x80000000);
 
 	// Are we coming from Kamek cutscene? If so, then do.. some stuff!
@@ -1096,16 +1100,7 @@ void dScKoopatlas_c::showSaveWindow() {
 	yesNoWindow->visible = true;
 }
 
-static const wchar_t *completionMsgs[] = {
-	L"The most erudite of Buttocks",
-	L"You've collected all of\nthe \x0B\x014F\xBEEF Star Coins in\n",
-	L"You have gotten every \x0B\x013B\xBEEF exit\nin",
-	L"You have gotten everything\nin",
-	L"You have collected all the\nnecessary \x0B\x014F\xBEEF coins to enter\nthe Special World!",
-	L"You have collected all the \x0B\x014F\xBEEF Star\nCoins in the game!",
-	L"You've found every \x0B\x013B\xBEEF exit in the\ngame!",
-	L"You've completed everything in\nNEWER SUPER MARIO BROS. Wii!\n\nWe present to you a new quest.\nTry pressing \x0B\x0122\xBEEF and \x0B\x0125\xBEEF\n on the Star Coin menu."
-};
+static const int completionBmgs[] = {1, 2, 3, 4, 5, 6, 7, 8};
 
 void dScKoopatlas_c::beginState_CompletionMsg() {
 	OSReport("CompletionMsg beginning with type %d\n", pathManager.completionMessageType);
@@ -1136,7 +1131,7 @@ void dScKoopatlas_c::executeState_CompletionMsg() {
 
 		int type = pathManager.completionMessageType;
 
-		const wchar_t *baseText = completionMsgs[type];
+		const wchar_t *baseText = msgRes->findStringForMessageID(BMG_CAT_NEWER, completionBmgs[type]);
 		// Used when we assemble a dynamic message
 		wchar_t text[512];
 
@@ -1145,7 +1140,7 @@ void dScKoopatlas_c::executeState_CompletionMsg() {
 			int w = pathManager.completionMessageWorldNum;
 			int l = ((w == 5) || (w == 7)) ? 101 : 100;
 			dLevelInfo_c::entry_s *titleEntry = dLevelInfo_c::s_info.searchByDisplayNum(w, l);
-			const char *title = dLevelInfo_c::s_info.getNameForLevel(titleEntry);
+			const wchar_t *title = dLevelInfo_c::s_info.getNameForLevel(titleEntry);
 
 			// assemble the string
 
@@ -1222,4 +1217,3 @@ void NewerMapDrawFunc() {
 	ClearLayoutDrawList();
 	SetCurrentCameraID(0);
 }
-

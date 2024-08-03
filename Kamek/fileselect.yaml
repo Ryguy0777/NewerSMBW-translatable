@@ -1,5 +1,5 @@
 ---
-source_files: [../src/fileselect.S]
+source_files: [../src/fileselect.cpp, ../src/fileselect.S]
 hooks:
   - name: FSDisBrlan1 # inMulti
     type: add_func_pointer
@@ -144,8 +144,8 @@ hooks:
   - {name: FSHideCD, type: branch_insn, branch_type: b, src_addr_pal: 0x80784200, target_func: 'FSHideCD'}
 
 
-  - {name: DFNiceTitle, type: branch_insn, branch_type: bl, src_addr_pal: 0x8077D044, target_func: 'DFNiceTitle'}
-  - {name: DFNiceWorldName, type: branch_insn, branch_type: bl, src_addr_pal: 0x8077DA10, target_func: 'DFNiceWorldName'}
+  - {name: DFNiceTitle, type: branch_insn, branch_type: b, src_addr_pal: 0x8077D044, target_func: 'DFNiceTitle'}
+  - {name: DFNiceWorldName, type: branch_insn, branch_type: b, src_addr_pal: 0x8077DA10, target_func: 'DFNiceWorldName'}
 
   - {name: DefaultSavefileInfo, type: branch_insn, branch_type: b, src_addr_pal: 0x800CE100, target_func: 'DefaultSavefileInfo'}
   - {name: FixUpExistingSavefile, type: branch_insn, branch_type: b, src_addr_pal: 0x800CF900, target_func: 'FixUpExistingSavefile'}
