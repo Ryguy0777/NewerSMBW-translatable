@@ -220,3 +220,7 @@ in the Riivolution patch).
 https://devkitpro.org/wiki/Getting_Started
 [Wine]:
 https://www.winehq.org/
+[utf]:
+https://github.com/wakanameko/NewerSMBW_UTF-8/tree/cw
+[utfed]:
+https://github.com/Developers-Collective/Level-Info-Editor_UTF
