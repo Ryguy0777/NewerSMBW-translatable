@@ -10,7 +10,7 @@ making it completely translatable into other languages.
 
 ### Changes from NewerSMBW
 
-* Incorportated ['Wakanameko's UTF LevelInfo Mod'][utf].
+* Incorportated [Wakanameko's UTF LevelInfo Mod][utf].
 * Moved LevelInfo.bin and Messages.bin to the `Language/Newer` folder.
 * Added new entries for all of Newer's text into the Message.arc file.
 * Changed Layout code to load strings from the Message.arc file.
@@ -26,7 +26,7 @@ NOTE: currently the only supported languages are:
 ### Adding a Translation
 
 Pull requests to add or improve translations will gladly be accepted.
-LevelInfo must be edited using ['Wakanameko's UTF LevelInfo Editor'][utfed].
+LevelInfo must be edited using [Wakanameko's UTF LevelInfo Editor][utfed].
 
 For BMG editing, refer to the BMG INFO.txt file.
 
